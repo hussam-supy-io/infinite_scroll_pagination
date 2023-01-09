@@ -3,13 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_error_indicator.dart';
-import 'package:infinite_scroll_pagination/src/ui/default_indicators/first_page_progress_indicator.dart';
-import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_error_indicator.dart';
-import 'package:infinite_scroll_pagination/src/ui/default_indicators/new_page_progress_indicator.dart';
-import 'package:infinite_scroll_pagination/src/ui/default_indicators/no_items_found_indicator.dart';
 import 'package:infinite_scroll_pagination/src/utils/listenable_listener.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+
+import 'default_indicators/defaults.dart';
 
 typedef CompletedListingBuilder = Widget Function(
   BuildContext context,
@@ -100,27 +97,25 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
   WidgetBuilder get _firstPageErrorIndicatorBuilder =>
       _builderDelegate.firstPageErrorIndicatorBuilder ??
-      (_) => FirstPageErrorIndicator(
-            onTryAgain: _pagingController.retryLastFailedRequest,
-          );
+      (_) => PagedInfiniteListConfig.defaults
+          .firstPageErrorIndicatorBuilder(context, _pagingController);
 
   WidgetBuilder get _newPageErrorIndicatorBuilder =>
       _builderDelegate.newPageErrorIndicatorBuilder ??
-      (_) => NewPageErrorIndicator(
-            onTap: _pagingController.retryLastFailedRequest,
-          );
+      (_) => PagedInfiniteListConfig.defaults
+          .newPageErrorIndicator(context, _pagingController);
 
   WidgetBuilder get _firstPageProgressIndicatorBuilder =>
       _builderDelegate.firstPageProgressIndicatorBuilder ??
-      (_) => FirstPageProgressIndicator();
+      PagedInfiniteListConfig.defaults.firstPageProgressIndicator;
 
   WidgetBuilder get _newPageProgressIndicatorBuilder =>
       _builderDelegate.newPageProgressIndicatorBuilder ??
-      (_) => const NewPageProgressIndicator();
+      PagedInfiniteListConfig.defaults.newPageProgressIndicator;
 
   WidgetBuilder get _noItemsFoundIndicatorBuilder =>
       _builderDelegate.noItemsFoundIndicatorBuilder ??
-      (_) => NoItemsFoundIndicator();
+      PagedInfiniteListConfig.defaults.noItemsFoundIndicator;
 
   WidgetBuilder? get _noMoreItemsIndicatorBuilder =>
       _builderDelegate.noMoreItemsIndicatorBuilder;
