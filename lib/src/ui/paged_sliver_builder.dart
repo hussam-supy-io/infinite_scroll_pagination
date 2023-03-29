@@ -258,14 +258,6 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
   }
 }
 
-extension on PagingController {
-  /// The loaded items count.
-  int get itemCount => itemList?.length ?? 0;
-
-  /// Tells whether there's a next page to request.
-  bool get hasNextPage => nextPageKey != null;
-}
-
 class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
   const _FirstPageStatusIndicatorBuilder({
     required this.builder,
