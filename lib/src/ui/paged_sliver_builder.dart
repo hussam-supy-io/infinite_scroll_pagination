@@ -125,6 +125,8 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
   int get _itemCount => _pagingController.itemCount;
 
+  int get _actualItemCount => _pagingController.actualItemCount;
+
   bool get _hasNextPage => _pagingController.hasNextPage;
 
   PageKeyType? get _nextKey => _pagingController.nextPageKey;
@@ -240,7 +242,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
   ) {
     if (!_hasRequestedNextPage && !_pagingController.fetchOnMaxScroll) {
       final newPageRequestTriggerIndex =
-          max(0, _itemCount - _invisibleItemsThreshold);
+          max(0, _actualItemCount - _invisibleItemsThreshold);
 
       final isBuildingTriggerIndexItem = index == newPageRequestTriggerIndex;
 
@@ -256,14 +258,6 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
     final item = itemList[index];
     return _builderDelegate.itemBuilder(context, item, index);
   }
-}
-
-extension on PagingController {
-  /// The loaded items count.
-  int get itemCount => itemList?.length ?? 0;
-
-  /// Tells whether there's a next page to request.
-  bool get hasNextPage => nextPageKey != null;
 }
 
 class _FirstPageStatusIndicatorBuilder extends StatelessWidget {
