@@ -10,6 +10,7 @@ class PagingState<PageKeyType, ItemType> {
     this.nextPageKey,
     this.itemList,
     this.error,
+    this.itemCount,
   });
 
   /// List with all items loaded so far.
@@ -20,6 +21,8 @@ class PagingState<PageKeyType, ItemType> {
 
   /// The key for the next page to be fetched.
   final PageKeyType? nextPageKey;
+
+  final int? itemCount;
 
   /// The current pagination status.
   PagingStatus get status {
@@ -69,7 +72,7 @@ class PagingState<PageKeyType, ItemType> {
         nextPageKey.hashCode,
       );
 
-  int? get _itemCount => itemList?.length;
+  int? get _itemCount => itemCount ?? itemList?.length;
 
   bool get _hasNextPage => nextPageKey != null;
 
