@@ -38,7 +38,7 @@ class PagingController<PageKeyType, ItemType>
     PagingState<PageKeyType, ItemType> value, {
     required this.firstPageKey,
     this.invisibleItemsThreshold,
-    this.fetchOnMaxScroll = true,
+    this.fetchOnMaxScroll = false,
   }) : super(value);
 
   ObserverList<PagingStatusListener>? _statusListeners =
@@ -53,10 +53,10 @@ class PagingController<PageKeyType, ItemType>
   /// The key for the first page to be fetched.
   final PageKeyType firstPageKey;
 
+  final bool fetchOnMaxScroll;
+
   /// List with all items loaded so far. Initially `null`.
   List<ItemType>? get itemList => value.itemList;
-
-  final bool fetchOnMaxScroll;
 
   set itemList(List<ItemType>? newItemList) {
     value = PagingState<PageKeyType, ItemType>(
@@ -219,6 +219,10 @@ class PagingController<PageKeyType, ItemType>
       }
     });
   }
+
+  int get itemCount => itemList?.length ?? 0;
+
+  bool get hasNextPage => nextPageKey != null;
 
   @override
   void dispose() {
