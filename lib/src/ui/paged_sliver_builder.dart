@@ -238,7 +238,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
     int index,
     List<ItemType> itemList,
   ) {
-    if (!_hasRequestedNextPage) {
+    if (!_hasRequestedNextPage && !_pagingController.fetchOnMaxScroll) {
       final newPageRequestTriggerIndex =
           max(0, _itemCount - _invisibleItemsThreshold);
 
