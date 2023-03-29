@@ -26,7 +26,7 @@ class PagingController<PageKeyType, ItemType>
   PagingController({
     required this.firstPageKey,
     this.invisibleItemsThreshold,
-    this.itemsCountCallback = _defaultItemsCount,
+    this.actualItemsCount = _defaultActualItemsCount,
   }) : super(
           PagingState<PageKeyType, ItemType>(nextPageKey: firstPageKey),
         );
@@ -38,7 +38,7 @@ class PagingController<PageKeyType, ItemType>
     PagingState<PageKeyType, ItemType> value, {
     required this.firstPageKey,
     this.invisibleItemsThreshold,
-    this.itemsCountCallback = _defaultItemsCount,
+    this.actualItemsCount = _defaultActualItemsCount,
   }) : super(value);
 
   ObserverList<PagingStatusListener>? _statusListeners =
@@ -53,7 +53,7 @@ class PagingController<PageKeyType, ItemType>
   /// The key for the first page to be fetched.
   final PageKeyType firstPageKey;
 
-  final int Function(List<ItemType>? list) itemsCountCallback;
+  final int Function(List<ItemType>? list) actualItemsCount;
 
   /// List with all items loaded so far. Initially `null`.
   List<ItemType>? get itemList => value.itemList;
@@ -220,11 +220,13 @@ class PagingController<PageKeyType, ItemType>
     });
   }
 
-  int get itemCount => itemsCountCallback(itemList);
+  int get itemCount => itemList?.length ?? 0;
+
+  int get actualItemCount => actualItemsCount(itemList);
 
   bool get hasNextPage => nextPageKey != null;
 
-  static int _defaultItemsCount(List? list) => list?.length ?? 0;
+  static int _defaultActualItemsCount(List? list) => list?.length ?? 0;
 
   @override
   void dispose() {
