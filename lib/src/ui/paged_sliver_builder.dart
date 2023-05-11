@@ -6,8 +6,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:infinite_scroll_pagination/src/utils/listenable_listener.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-import 'default_indicators/defaults.dart';
-
 typedef CompletedListingBuilder = Widget Function(
   BuildContext context,
   IndexedWidgetBuilder itemWidgetBuilder,
@@ -129,9 +127,6 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
 
   PageKeyType? get _nextKey => _pagingController.nextPageKey;
 
-  /// Avoids duplicate requests on rebuilds.
-  bool _hasRequestedNextPage = false;
-
   @override
   Widget build(BuildContext context) => ListenableListener(
         listenable: _pagingController,
@@ -145,7 +140,7 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
           }
 
           if (status == PagingStatus.ongoing) {
-            _hasRequestedNextPage = false;
+            _pagingController.hasRequestedNextPage.value = false;
           }
         },
         child: ValueListenableBuilder<PagingState<PageKeyType, ItemType>>(
@@ -167,7 +162,16 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
                     itemList!,
                   ),
                   _itemCount,
-                  _newPageProgressIndicatorBuilder,
+                  (context) => ValueListenableBuilder<bool>(
+                    valueListenable: _pagingController.hasRequestedNextPage,
+                    builder: (context, value, child) {
+                      if (!value) {
+                        return const SizedBox.shrink();
+                      }
+
+                      return _newPageProgressIndicatorBuilder(context);
+                    },
+                  ),
                 );
                 break;
               case PagingStatus.completed:
@@ -238,7 +242,8 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
     int index,
     List<ItemType> itemList,
   ) {
-    if (!_hasRequestedNextPage && !_pagingController.fetchOnMaxScroll) {
+    if (!_pagingController.hasRequestedNextPage.value &&
+        !_pagingController.fetchOnMaxScroll) {
       final newPageRequestTriggerIndex =
           max(0, _itemCount - _invisibleItemsThreshold);
 
@@ -249,7 +254,6 @@ class _PagedSliverBuilderState<PageKeyType, ItemType>
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _pagingController.notifyPageRequestListeners(_nextKey!);
         });
-        _hasRequestedNextPage = true;
       }
     }
 

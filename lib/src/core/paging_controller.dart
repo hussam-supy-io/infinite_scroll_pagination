@@ -58,6 +58,8 @@ class PagingController<PageKeyType, ItemType>
   /// List with all items loaded so far. Initially `null`.
   List<ItemType>? get itemList => value.itemList;
 
+  final hasRequestedNextPage = ValueNotifier<bool>(false);
+
   set itemList(List<ItemType>? newItemList) {
     value = PagingState<PageKeyType, ItemType>(
       error: error,
@@ -218,6 +220,8 @@ class PagingController<PageKeyType, ItemType>
         listener(pageKey);
       }
     });
+
+    hasRequestedNextPage.value = value.status != PagingStatus.loadingFirstPage;
   }
 
   int get itemCount => itemList?.length ?? 0;
