@@ -68,6 +68,9 @@ class PagingController<PageKeyType, ItemType>
     );
   }
 
+  bool _disposed = false;
+  bool get disposed => _disposed;
+
   /// The current error, if any. Initially `null`.
   dynamic get error => value.error;
 
@@ -233,6 +236,7 @@ class PagingController<PageKeyType, ItemType>
     assert(_debugAssertNotDisposed());
     _statusListeners = null;
     _pageRequestListeners = null;
+    _disposed = true;
     super.dispose();
   }
 }
