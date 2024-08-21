@@ -219,7 +219,7 @@ class PagingController<PageKeyType, ItemType>
       if (_pageRequestListeners!.contains(listener)) {
         listener(pageKey);
       }
-    });
+    }
 
     hasRequestedNextPage.value = value.status != PagingStatus.loadingFirstPage;
   }

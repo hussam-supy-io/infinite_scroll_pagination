@@ -33,7 +33,7 @@ class PagedInfiniteListConfig {
       NewPageErrorIndicator(onTap: controller.retryLastFailedRequest);
 
   static Widget _firstPageProgressIndicator(BuildContext context) =>
-      FirstPageProgressIndicator();
+      const FirstPageProgressIndicator();
 
   static Widget _newPageProgressIndicator(BuildContext context) =>
       const NewPageProgressIndicator();

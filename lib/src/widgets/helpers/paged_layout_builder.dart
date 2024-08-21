@@ -11,6 +11,8 @@ import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_in
 import 'package:infinite_scroll_pagination/src/widgets/helpers/default_status_indicators/no_items_found_indicator.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
+import 'default_status_indicators/defaults.dart';
+
 typedef CompletedListingBuilder = Widget Function(
   BuildContext context,
   IndexedWidgetBuilder itemWidgetBuilder,
