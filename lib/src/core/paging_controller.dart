@@ -154,7 +154,7 @@ class PagingController<PageKeyType, ItemType>
   /// Listeners can be removed with [removeStatusListener].
   void addStatusListener(PagingStatusListener listener) {
     assert(_debugAssertNotDisposed());
-    _statusListeners!.add(listener);
+    _statusListeners?.add(listener);
   }
 
   /// Stops calling the listener every time the status of the pagination
@@ -163,7 +163,7 @@ class PagingController<PageKeyType, ItemType>
   /// Listeners can be added with [addStatusListener].
   void removeStatusListener(PagingStatusListener listener) {
     assert(_debugAssertNotDisposed());
-    _statusListeners!.remove(listener);
+    _statusListeners?.remove(listener);
   }
 
   /// Calls all the status listeners.
@@ -173,16 +173,16 @@ class PagingController<PageKeyType, ItemType>
   void notifyStatusListeners(PagingStatus status) {
     assert(_debugAssertNotDisposed());
 
-    if (_statusListeners!.isEmpty) {
+    if (_statusListeners?.isEmpty ?? true) {
       return;
     }
 
     final localListeners = List<PagingStatusListener>.from(_statusListeners!);
-    localListeners.forEach((listener) {
+    for (final listener in localListeners) {
       if (_statusListeners!.contains(listener)) {
         listener(status);
       }
-    });
+    }
   }
 
   /// Calls listener every time new items are needed.
@@ -190,7 +190,7 @@ class PagingController<PageKeyType, ItemType>
   /// Listeners can be removed with [removePageRequestListener].
   void addPageRequestListener(PageRequestListener<PageKeyType> listener) {
     assert(_debugAssertNotDisposed());
-    _pageRequestListeners!.add(listener);
+    _pageRequestListeners?.add(listener);
   }
 
   /// Stops calling the listener every time new items are needed.
@@ -198,7 +198,7 @@ class PagingController<PageKeyType, ItemType>
   /// Listeners can be added with [addPageRequestListener].
   void removePageRequestListener(PageRequestListener<PageKeyType> listener) {
     assert(_debugAssertNotDisposed());
-    _pageRequestListeners!.remove(listener);
+    _pageRequestListeners?.remove(listener);
   }
 
   /// Calls all the page request listeners.
@@ -208,14 +208,14 @@ class PagingController<PageKeyType, ItemType>
   void notifyPageRequestListeners(PageKeyType pageKey) {
     assert(_debugAssertNotDisposed());
 
-    if (_pageRequestListeners!.isEmpty) {
+    if (_pageRequestListeners?.isEmpty ?? true) {
       return;
     }
 
     final localListeners =
         List<PageRequestListener<PageKeyType>>.from(_pageRequestListeners!);
 
-    localListeners.forEach((listener) {
+    for (final listener in localListeners) {
       if (_pageRequestListeners!.contains(listener)) {
         listener(pageKey);
       }
